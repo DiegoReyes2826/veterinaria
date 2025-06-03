@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login | Veterinaria WowWow</title>
+</head>
+<body>
+    <h1>Iniciar Sesión</h1>
+
+    <form th:action="@{/login}" method="post">
+        <label>Correo:</label>
+        <input type="email" name="correo" placeholder="Correo" required />
+
+        <label>Contraseña:</label>
+        <input type="password" name="contrasena" placeholder="Contraseña" required />
+
+        <button type="submit">Iniciar Sesión</button>
+    </form>
+
+    <p th:if="${error}" th:text="${error}" style="color: red;"></p>
+</body>
+</html>

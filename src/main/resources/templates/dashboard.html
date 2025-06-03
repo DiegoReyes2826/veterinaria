@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Panel de Usuario</title>
+</head>
+<body>
+
+<h2 th:text="'Bienvenido, ' + ${nombre}"></h2>
+<a th:href="@{/logout}">Cerrar Sesión</a>
+
+
+<div th:if="${rol == 'administrador'}">
+    <h3>Panel Administrador</h3>
+    <a th:href="@{/usuarios}">Gestionar Usuarios</a><br>
+    <a th:href="@{/citas}">Ver Citas</a>
+</div>
+
+<div th:if="${rol == 'recepcionista'}">
+    <h3>Panel Recepcionista</h3>
+    <a th:href="@{/citas}">Gestionar Citas</a><br>
+    <a th:href="@{/mascotas}">Ver Mascotas</a>
+</div>
+
+<div th:if="${rol == 'veterinario'}">
+    <h3>Panel Veterinario</h3>
+    <a th:href="@{/veterinario/citas}">Citas del Día</a><br>
+    <a th:href="@{/veterinario/mascotas}">Mascotas Atendidas</a>
+</div>
+
+<div th:if="${rol == 'cliente'}">
+    <h3>Panel Cliente</h3>
+    <a th:href="@{/cliente/mascotas}">Mis Mascotas</a><br>
+    <a th:href="@{/cliente/historial}">Historial Clínico</a>
+</div>
+
+<div th:if="${rol == 'tecnico'}">
+    <h3>Panel Técnico</h3>
+    <a th:href="@{/historias}">Ver Historias Clínicas</a><br>
+    <a th:href="@{/tecnico/mascotas}">Mascotas en Tratamiento</a>
+</div>
+
+</body>
+</html>

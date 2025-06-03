@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Observaciones Técnicas</title>
+</head>
+<body>
+    <h1>Observaciones Técnicas de la Mascota</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Observaciones</th>
+                <th>Notas Técnicas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="historia : ${historias}">
+                <td th:text="${#dates.format(historia.fecha, 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${historia.observaciones}"></td>
+                <td th:text="${historia.notasTecnicas}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="/mascotas">Volver</a>
+</body>
+</html>

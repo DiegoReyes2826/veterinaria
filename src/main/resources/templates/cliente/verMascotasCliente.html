@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Mascotas - Veterinaria WowWow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4b8bbe; /* Azul Calmado */
+            --secondary-color: #f8a434; /* Naranja Vital */
+            --text-dark: #333;
+            --text-light: #666;
+            --background-light: #f9f9f9;
+            --border-light: #ddd;
+            --table-header-bg: #eaf3f8; /* Un azul claro para el encabezado de la tabla */
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+            position: relative;
+        }
+
+        .header h1 {
+            font-family: 'Pacifico', cursive;
+            color: var(--primary-color);
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .header p {
+            color: var(--text-light);
+            font-size: 1.1em;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Iconos de ambiente para el encabezado */
+        .header::before, .header::after {
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            font-size: 3em;
+            color: rgba(75, 139, 190, 0.05);
+            z-index: 0;
+            top: 10px;
+        }
+
+        .header::before {
+            content: "\f1b0"; /* huesos */
+            left: 20px;
+            transform: rotate(-15deg);
+        }
+
+        .header::after {
+            content: "\f6d3"; /* huella de perro */
+            right: 20px;
+            transform: rotate(15deg);
+        }
+
+        .pets-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .pets-table th, .pets-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .pets-table th {
+            background-color: var(--table-header-bg);
+            color: var(--primary-color);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
+        }
+
+        .pets-table tbody tr:nth-child(even) {
+            background-color: #fdfdfd;
+        }
+
+        .pets-table tbody tr:hover {
+            background-color: #f5fafd;
+        }
+
+        .pets-table td {
+            color: var(--text-dark);
+            font-size: 0.95em;
+        }
+
+        .pets-table a {
+            background-color: var(--secondary-color);
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .pets-table a i {
+            margin-right: 5px;
+        }
+
+        .pets-table a:hover {
+            background-color: #e68e2b;
+            transform: translateY(-1px);
+        }
+
+        .no-records {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-light);
+            font-size: 1.1em;
+            background-color: #fff;
+            border-radius: 8px;
+            border: 1px dashed var(--border-light);
+            margin-top: 30px;
+        }
+
+        .no-records i {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border-light);
+            color: var(--text-light);
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-heart"></i> Mis Mascotas</h1>
+            <p>Aquí puedes ver el listado de tus queridos compañeros registrados en **WowWow Veterinaria**. Queremos que siempre estés al tanto de su salud.</p>
+        </div>
+
+        <div th:if="${#lists.isEmpty(misMascotas)}" class="no-records">
+            <i class="fas fa-cat"></i> <i class="fas fa-dog" style="margin-left: 10px;"></i>
+            <p>¡Oh, oh! Parece que aún no tienes mascotas registradas con nosotros.</p>
+            <p>¡Nos encantaría conocer a tus compañeros peludos! Puedes <a href="#" style="color: var(--secondary-color); text-decoration: underline; font-weight: 600;">registrar una nueva mascota aquí</a>.</p>
+        </div>
+
+        <table th:unless="${#lists.isEmpty(misMascotas)}" class="pets-table">
+            <thead>
+                <tr>
+                    <th><i class="fas fa-signature"></i> Nombre</th>
+                    <th><i class="fas fa-paw"></i> Especie</th>
+                    <th><i class="fas fa-dna"></i> Raza</th>
+                    <th><i class="fas fa-birthday-cake"></i> Edad</th>
+                    <th><i class="fas fa-file-medical"></i> Historial Clínico</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="mascota : ${misMascotas}">
+                    <td th:text="${mascota.nombre}"></td>
+                    <td th:text="${mascota.especie}"></td>
+                    <td th:text="${mascota.raza}"></td>
+                    <td th:text="${mascota.edad}"></td>
+                    <td>
+                        <a th:href="@{'/historias/cliente/' + ${mascota.idString}}">
+                            <i class="fas fa-book-medical"></i> Ver Historia
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="footer">
+            &copy; 2025 Veterinaria WowWow. Donde el amor por los animales cobra vida.
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Citas</title>
+</head>
+<body>
+
+<h1>Mis Citas</h1>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Fecha y hora</th>
+            <th>Motivo</th>
+            <th>Estado</th>
+            <th>Mascota</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="cita : ${listaCitas}">
+            <td th:text="${#temporals.format(cita.fechaHora, 'yyyy-MM-dd HH:mm')}">Fecha</td>
+            <td th:text="${cita.motivo}">Motivo</td>
+            <td th:text="${cita.estado}">Estado</td>
+            <td th:text="${nombresMascotas[cita.mascotaId]}">Mascota</td>
+        </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/citas}">Volver</a>
+
+</body>
+</html>

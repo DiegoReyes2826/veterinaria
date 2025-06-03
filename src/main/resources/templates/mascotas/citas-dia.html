@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Citas del Día</title>
+</head>
+<body>
+<h2>Citas de Hoy</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Mascota</th>
+            <th>Motivo</th>
+            <th>Hora</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="cita : ${citas}">
+            <td th:text="${cita.mascotaNombre}">Nombre</td>
+            <td th:text="${cita.motivo}">Motivo</td>
+            <td th:text="${#temporals.format(cita.fechaHora, 'HH:mm')}">Hora</td>
+            <td th:text="${cita.estado}">Estado</td>
+        </tr>
+    </tbody>
+</table>
+<a href="/">Volver</a>
+</body>
+</html>

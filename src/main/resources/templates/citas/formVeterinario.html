@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Editar Veterinario</title></head>
+<body>
+<h1>Editar Veterinario Asignado</h1>
+
+<form th:action="@{'/citas/asignar-veterinario/' + ${cita.id}}" method="post">
+    <label>Veterinario:</label>
+    <select name="veterinarioId" required>
+        <option value="">-- Seleccionar --</option>
+        <option th:each="vet : ${veterinarios}"
+                th:value="${vet.id}"
+                th:text="${vet.nombre}"
+                th:selected="${vet.id.toString() == cita.veterinarioId}">
+        </option>
+    </select><br><br>
+    <button type="submit">Guardar cambios</button>
+</form>
+
+<a th:href="@{/citas}">Cancelar</a>
+</body>
+</html>

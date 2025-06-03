@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${editMode == 'false' ? 'Nueva Historia Clínica' : 'Editar Historia Clínica'} + ' | Veterinaria WowWow'"></title>
+    <style>
+        :root {
+            --primary: #4b8bbe;
+            --secondary: #f8a434;
+            --light: #f5f5f5;
+            --dark: #333;
+            --success: #5cb85c;
+            --warning: #f0ad4e;
+            --danger: #d9534f;
+            --info: #5bc0de;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        h1 i {
+            margin-right: 15px;
+            color: var(--secondary);
+        }
+        
+        .form-container {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        input[readonly] {
+            background-color: #f0f0f0;
+            color: #666;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        input:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(75, 139, 190, 0.2);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #3a6a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #d18a2a;
+            transform: translateY(-2px);
+        }
+        
+        .btn i {
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>
+            <i class="fas fa-file-medical"></i>
+            <span th:text="${editMode == 'false' ? 'Nueva Historia Clínica' : 'Editar Historia Clínica'}"></span>
+        </h1>
+        
+        <div class="form-container">
+            <form th:action="@{/historias/guardar}" th:object="${historia}" method="post">
+                <!-- Campos ocultos -->
+                <input type="hidden" th:if="${editMode == 'true'}" th:field="*{id}" />
+                <input type="hidden" th:field="*{mascotaId}" />
+                <input type="hidden" name="editMode" th:value="${editMode}" />
+                
+                <div class="form-group">
+                    <label><i class="fas fa-calendar-day"></i> Fecha:</label>
+                    <input type="text" th:field="*{fecha}" readonly />
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-diagnoses"></i> Diagnóstico:</label>
+                    <textarea th:field="*{diagnostico}" placeholder="Ingrese el diagnóstico del paciente..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-prescription-bottle-alt"></i> Tratamiento:</label>
+                    <textarea th:field="*{tratamiento}" placeholder="Describa el tratamiento indicado..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-eye"></i> Observaciones:</label>
+                    <textarea th:field="*{observaciones}" placeholder="Agregue cualquier observación relevante..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-notes-medical"></i> Notas Técnicas:</label>
+                    <textarea th:field="*{notasTecnicas}" placeholder="Notas internas para el equipo veterinario..."></textarea>
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Guardar
+                    </button>
+                    <a th:href="@{/historias}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

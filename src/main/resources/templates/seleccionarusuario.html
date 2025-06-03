@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleccionar Veterinario | WowWow</title>
+    <style>
+        :root {
+            --primary: #4b8bbe;
+            --secondary: #f8a434;
+            --light: #f5f5f5;
+            --dark: #333;
+            --success: #5cb85c;
+            --warning: #f0ad4e;
+            --danger: #d9534f;
+            --info: #5bc0de;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1534361960057-19889db9621e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .form-container {
+            margin-bottom: 30px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.1rem;
+            text-align: left;
+        }
+        
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 25px;
+            background-color: white;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234b8bbe' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 15px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary);
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            width: 100%;
+            gap: 10px;
+        }
+        
+        .btn:hover {
+            background: #3a6a8a;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-secondary {
+            background: var(--secondary);
+            margin-top: 15px;
+        }
+        
+        .btn-secondary:hover {
+            background: #d18a2a;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h2>
+            <i class="fas fa-user-md"></i>
+            Selecciona tu usuario
+        </h2>
+        
+        <div class="form-container">
+            <form th:action="@{/veterinario/set-id}" method="get">
+                <label for="veterinarioId">
+                    <i class="fas fa-stethoscope"></i> Veterinario:
+                </label>
+                <select id="veterinarioId" name="veterinarioId" required>
+                    <option value="">-- Selecciona tu nombre --</option>
+                    <option th:each="u : ${usuarios}" 
+                            th:value="${u.id}" 
+                            th:text="${u.nombre}">
+                    </option>
+                </select>
+                <button type="submit" class="btn">
+                    <i class="fas fa-arrow-right"></i> Continuar
+                </button>
+            </form>
+        </div>
+        
+        <a href="/" class="btn btn-secondary">
+            <i class="fas fa-home"></i> Volver al Inicio
+        </a>
+    </div>
+</body>
+</html>

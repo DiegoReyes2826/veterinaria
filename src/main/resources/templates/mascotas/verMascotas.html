@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Veterinaria WowWow - Lista de Mascotas</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f7f7;
+            margin: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        a {
+            color: #2196F3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        td:last-child {
+            white-space: nowrap;
+        }
+        .button-link {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🐾 Lista de Mascotas - Veterinaria WowWow</h1>
+
+    <p><a th:href="@{/mascotas/nuevo}">+ Registrar nueva mascota</a></p>
+	<a href="/historias" class="btn btn-primary">Ver Historias Clínicas</a>
+	<a th:href="@{/}">🐾 Volver al Inicio</a>
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Especie</th>
+                <th>Raza</th>
+                <th>Edad</th>
+                <th>Dueño</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="m : ${mascotas}">
+                <td th:text="${m.nombre}">Nombre</td>
+                <td th:text="${m.especie}">Especie</td>
+                <td th:text="${m.raza}">Raza</td>
+                <td th:text="${m.edad}">Edad</td>
+                <td th:text="${nombresUsuarios[m.idUsuarioString] != null ? nombresUsuarios[m.idUsuarioString] : 'Sin dueño'}">Dueño</td>
+                <td>
+                    <a class="button-link" th:href="@{'/mascotas/editar/' + ${m.id}}">Editar</a>
+                    <a class="button-link" th:href="@{'/mascotas/eliminar/' + ${m.id}}"
+                       onclick="return confirm('¿Estás seguro que deseas eliminar esta mascota?')">Eliminar</a>
+                    <a class="button-link" th:href="@{'/historias/nuevo/' + ${m.id}}">Crear Historia Clínica</a>
+					
+                </td>
+            </tr>
+			
+        </tbody>
+    </table>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Mascotas del Día</title>
+</head>
+<body>
+<h2>Mascotas con cita hoy</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Especie</th>
+            <th>Edad</th>
+            <th>Dueño</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="mascota : ${mascotas}">
+            <td th:text="${mascota.nombre}">Nombre</td>
+            <td th:text="${mascota.especie}">Especie</td>
+            <td th:text="${mascota.edad}">Edad</td>
+            <td th:text="${mascota.duenioNombre}">Dueño</td>
+        </tr>
+    </tbody>
+</table>
+<a href="/">Volver</a>
+</body>
+</html>

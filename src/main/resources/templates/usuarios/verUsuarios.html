@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios | Veterinaria WowWow</title>
+    <style>
+        :root {
+            --primary: #4b8bbe;
+            --secondary: #f8a434;
+            --light: #f5f5f5;
+            --dark: #333;
+            --success: #5cb85c;
+            --warning: #f0ad4e;
+            --danger: #d9534f;
+            --info: #5bc0de;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 15px;
+        }
+        
+        h1 {
+            color: var(--primary);
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        h1 i {
+            margin-right: 15px;
+            color: var(--secondary);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: #3a6a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+        
+        tr:hover {
+            background-color: #f0f7ff;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .badge-admin {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .badge-recep {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .badge-cliente {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .action-links {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-link {
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .edit-link {
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .edit-link:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .delete-link {
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+        
+        .delete-link:hover {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            th, td {
+                padding: 10px 8px;
+                font-size: 14px;
+            }
+            
+            .action-links {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-users"></i> Gestión de Usuarios</h1>
+            <a th:href="@{/usuarios/nuevo}" class="btn">
+                <i class="fas fa-user-plus"></i> Registrar Nuevo Usuario
+            </a>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Correo Electrónico</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="u : ${usuarios}">
+                    <td th:text="${u.nombre}">Nombre</td>
+                    <td th:text="${u.correo}">correo@ejemplo.com</td>
+                    <td>
+                        <span th:classappend="'badge-' + (u.rol == 'administrador' ? 'admin' : (u.rol == 'recepcionista' ? 'recep' : 'cliente'))" 
+                              class="badge" th:text="${u.rol}">
+                            Rol
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-links">
+                            <a th:href="@{'/usuarios/editar/' + ${u.id}}" class="action-link edit-link">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <a th:href="@{'/usuarios/eliminar/' + ${u.id}}" 
+                               onclick="return confirm('¿Estás seguro de eliminar este usuario?')" 
+                               class="action-link delete-link">
+                                <i class="fas fa-trash-alt"></i> Eliminar
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

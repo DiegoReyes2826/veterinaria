@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Agenda Veterinario</title></head>
+<body>
+<h1>Agenda del Veterinario</h1>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Motivo</th>
+            <th>Mascota</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="cita : ${listaCitas}">
+            <td th:text="${#temporals.format(cita.fechaHora, 'yyyy-MM-dd HH:mm')}">Fecha</td>
+            <td th:text="${cita.motivo}">Motivo</td>
+            <td th:text="${nombresMascotas[cita.mascotaId]}">Mascota</td>
+            <td th:text="${cita.estado}">Estado</td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Expedientes Clínicos - ¡Cuidando Patitas con Amor! 🐾</title>
+    <style>
+        /* Aquí empieza mi toque WowWow de estilo */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+            line-height: 1.6;
+            margin: 20px;
+            padding: 0;
+        }
+
+        h1 {
+            color: #007bff; /* Un azul vibrante, como la energía de un cachorro */
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Una sombra sutil para un toque elegante */
+            background-color: #fff;
+            border-radius: 8px; /* Bordes redonditos, ¡como las huellitas! */
+            overflow: hidden; /* Para que los bordes redondos se apliquen bien */
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #e9f5ff; /* Un azul clarito, muy profesional */
+            color: #0056b3;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2; /* Para que las filas se vean más ordenadas */
+        }
+
+        tr:hover {
+            background-color: #e0f7fa; /* Un toque de color al pasar el ratón, ¡como una caricia! */
+        }
+
+        .action-links a {
+            text-decoration: none;
+            color: #28a745; /* Verde esperanza para "Editar" */
+            margin-right: 10px;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .action-links a:hover {
+            color: #218838;
+        }
+
+        .action-links a.delete-link {
+            color: #dc3545; /* Rojo pasión para "Eliminar" */
+        }
+
+        .action-links a.delete-link:hover {
+            color: #c82333;
+        }
+
+        .button-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .button-group a {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            margin: 0 10px;
+        }
+
+        .button-group a:hover {
+            background-color: #0056b3;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-link a {
+            color: #6c757d;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .back-link a:hover {
+            color: #495057;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌟 Expedientes Clínicos: El Corazón de WowWow 🌟</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Mascota</th>
+                <th>Fecha Visita</th>
+                <th>Diagnóstico 🩺</th>
+                <th>Tratamiento 💊</th>
+                <th>Observaciones</th>
+                <th>Notas Técnicas 🔬</th>
+                <th>Acciones Rápidas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="historia : ${listaHistorias}">
+                <td th:text="${historia.id}"></td>
+                <td th:text="${historia.mascotaId}"></td>
+                <td th:text="${historia.fecha}"></td>
+                <td th:text="${historia.diagnostico}"></td>
+                <td th:text="${historia.tratamiento}"></td>
+                <td th:text="${historia.observaciones}"></td>
+                <td th:text="${historia.notasTecnicas}"></td>
+                <td class="action-links">
+                    <a th:href="@{'/historias/editar/' + ${historia.id}}">Editar</a> |
+                    <a th:href="@{'/historias/eliminar/' + ${historia.id}}"
+                       onclick="return confirm('¡Un momento! ¿Estás realmente seguro de borrar esta historia? Una vez se va, ¡se va para siempre!')" class="delete-link">Eliminar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+  
+
+    <div class="back-link">
+        <a th:href="@{/mascotas}">🐾 Volver a la lista de Mascotas</a>
+    </div>
+</body>
+</html>

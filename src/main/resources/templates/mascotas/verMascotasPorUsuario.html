@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Mascotas del Usuario</title></head>
+<body>
+<h1 th:text="'Mascotas de ' + ${nombreUsuario}"></h1>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Especie</th>
+            <th>Raza</th>
+            <th>Edad</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="m : ${mascotas}">
+            <td th:text="${m.nombre}">Nombre</td>
+            <td th:text="${m.especie}">Especie</td>
+            <td th:text="${m.raza}">Raza</td>
+            <td th:text="${m.edad}">Edad</td>
+        </tr>
+        <tr th:if="${mascotas.size() == 0}">
+            <td colspan="4">No hay mascotas registradas para este usuario.</td>
+        </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/usuarios}">Volver</a>
+</body>
+</html>

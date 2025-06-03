@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Cita | Clínica Veterinaria WowWow</title>
+    <style>
+        :root {
+            --primary: #4b8bbe;
+            --secondary: #f8a434;
+            --light: #f5f5f5;
+            --dark: #333;
+            --success: #5cb85c;
+            --warning: #f0ad4e;
+            --danger: #d9534f;
+            --info: #5bc0de;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 10px;
+        }
+        
+        .form-container {
+            background: #f0f8ff;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        select, input[type="text"], 
+        input[type="date"], input[type="time"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        select:focus, input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(75, 139, 190, 0.2);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background: #3a6a8a;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: var(--secondary);
+            margin-top: 10px;
+        }
+        
+        .btn-secondary:hover {
+            background: #d18a2a;
+        }
+        
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .time-slot {
+            padding: 8px;
+            text-align: center;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .time-slot:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .time-slot.selected {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+        
+        .pet-icon {
+            color: var(--secondary);
+            margin-right: 5px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .form-container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐾 Agendar Nueva Cita</h1>
+        
+        <div class="form-container">
+            <form th:action="@{/citas/guardar}" method="post" th:object="${cita}">
+                <input type="hidden" name="editMode" value="false"/>
+                
+                <div class="form-group">
+                    <label for="usuarioId">📋 Cliente:</label>
+                    <select id="usuarioId" name="usuarioId" onchange="filtrarMascotas()" required>
+                        <option value="">Selecciona un cliente</option>
+                        <option th:each="usuario : ${usuarios}" 
+                                th:value="${usuario.id}" 
+                                th:text="${usuario.nombre}">
+                        </option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="mascotaId">🐶 Mascota:</label>
+                    <select id="mascotaId" name="mascotaId" required>
+                        <option value="">Primero selecciona un cliente</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="veterinarioId">👨‍⚕️ Veterinario:</label>
+                    <select id="veterinarioId" th:field="*{veterinarioId}" required>
+                        <option value="">Selecciona un veterinario</option>
+                        <option th:each="v : ${veterinarios}" 
+                                th:value="${v.id}" 
+                                th:text="${v.nombre}">
+                        </option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="motivo">📝 Motivo de la consulta:</label>
+                    <input type="text" id="motivo" th:field="*{motivo}" 
+                           placeholder="Ej. Vacunación anual, revisión, etc." required/>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fecha">📅 Fecha:</label>
+                    <input type="date" id="fecha" name="fecha" required/>
+                </div>
+                
+                <div class="form-group">
+                    <label for="hora">⏰ Hora:</label>
+                    <select id="hora" name="hora" required>
+                        <option value="">Selecciona una hora</option>
+                        <option th:each="hora : ${bloquesHora}"
+                                th:value="${hora}" 
+                                th:text="${hora}">
+                        </option>
+                    </select>
+                    <small>Horarios disponibles de 9:00 a 18:00</small>
+                </div>
+                
+                <button type="submit" class="btn">✅ Agendar Cita</button>
+            </form>
+        </div>
+        
+        <a th:href="@{/citas}" class="btn btn-secondary">🔙 Volver a la lista de citas</a>
+    </div>
+
+    <script th:inline="javascript">
+        let todasMascotas = /*[[${mascotas}]]*/ [];
+        console.log("Mascotas cargadas:", todasMascotas);
+        
+        function filtrarMascotas() {
+            const usuarioId = document.getElementById('usuarioId').value;
+            console.log("Usuario seleccionado:", usuarioId);
+
+            const filtradas = todasMascotas.filter(m => {
+                console.log("ID del cliente:", usuarioId);
+                const match = String(m.idUsuarioString) === String(usuarioId);
+                console.log("¿Coincide?", match);
+                return match;
+            });
+
+            const selectMascota = document.getElementById('mascotaId');
+            selectMascota.innerHTML = "<option value=''>Selecciona una mascota</option>";
+
+            filtradas.forEach(m => {
+                const option = document.createElement('option');
+                option.value = m.idString;
+                option.textContent = m.nombre;
+                selectMascota.appendChild(option);
+            });
+
+            if (filtradas.length === 0) {
+                console.warn("No se encontraron mascotas para este usuario.");
+                selectMascota.innerHTML = "<option value=''>Este cliente no tiene mascotas registradas</option>";
+            }
+        }
+        
+        // Mejorar UX para selección de fecha
+        document.addEventListener('DOMContentLoaded', function() {
+            const fechaInput = document.getElementById('fecha');
+            if (fechaInput) {
+                // Establecer fecha mínima como hoy
+                const today = new Date().toISOString().split('T')[0];
+                fechaInput.setAttribute('min', today);
+                
+                // Opcional: Establecer fecha por defecto como hoy
+                // fechaInput.value = today;
+            }
+        });
+    </script>
+</body>
+</html>

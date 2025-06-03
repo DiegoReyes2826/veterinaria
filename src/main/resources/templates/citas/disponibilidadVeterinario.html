@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Disponibilidad de Veterinario</title>
+</head>
+<body>
+    <h1>Consultar Disponibilidad</h1>
+
+    <form method="get" th:action="@{/veterinario/disponibilidad}">
+        <label>Veterinario:</label>
+        <select name="veterinarioId" required>
+            <option value="">-- Seleccionar --</option>
+            <option th:each="v : ${veterinarios}" 
+                    th:value="${v.id}" 
+                    th:text="${v.nombre}"
+                    th:selected="${veterinarioSeleccionado != null and v.id == veterinarioSeleccionado.id}">
+            </option>
+        </select>
+
+        <label>Fecha:</label>
+        <input type="date" name="fecha" th:value="${fecha}" required>
+
+        <button type="submit">Ver Disponibilidad</button>
+    </form>
+
+    <div th:if="${horasDisponibles != null}">
+        <h2 th:text="'Disponibilidad para ' + ${veterinarioSeleccionado.nombre} + ' el ' + ${fecha}"></h2>
+        <ul>
+            <li th:each="hora : ${horasDisponibles}">
+                <span th:text="${hora}"></span>
+                <!-- Opcional: vincular con creación de historia -->
+                <a th:href="@{/historias/nuevo}" style="margin-left:10px;">Crear Historia</a>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

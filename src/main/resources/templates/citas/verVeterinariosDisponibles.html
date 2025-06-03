@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Equipo Veterinario WowWow: ¡Nuestros Héroes! 🌟</title>
+    <style>
+        /* ¡Aquí mi estilo WowWow le da vida a la página! */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f8ff; /* Un azul muy suave, como un cielo despejado */
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px; /* Un poco más de espacio para la tabla */
+            margin: 0 auto;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0); /* Un gradiente sutil, ¡para un toque especial! */
+            padding: 30px;
+            border-radius: 12px; /* Bordes más suaves */
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15); /* Una sombra más profunda */
+            border: 1px solid #e0e0e0;
+        }
+        h1 {
+            color: #007bff; /* Nuestro azul distintivo */
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+            font-size: 2.5em; /* Un poco más grande para que destaque */
+        }
+        h2 {
+            color: #0056b3;
+            margin-top: 30px;
+            border-bottom: 2px solid #e9f5ff;
+            padding-bottom: 10px;
+        }
+        h3 {
+            color: #007bff;
+            margin-top: 25px;
+            text-align: center;
+        }
+        form {
+            display: flex; /* Para alinear mejor los elementos del formulario */
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #e9f5ff;
+            border-radius: 8px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+        label {
+            margin-right: 15px;
+            font-weight: bold;
+            color: #0056b3;
+        }
+        input[type="text"] {
+            padding: 10px 15px;
+            border: 1px solid #a8d9ff; /* Un borde más bonito */
+            border-radius: 5px;
+            margin-right: 15px;
+            flex-grow: 1; /* Para que ocupe más espacio */
+            max-width: 250px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+        }
+        button {
+            padding: 10px 25px;
+            background-color: #28a745; /* ¡Un verde que inspira confianza! */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        button:hover {
+            background-color: #218838;
+            transform: translateY(-2px); /* Un pequeño efecto al pasar el ratón */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+        tr:hover {
+            background-color: #e0f7fa; /* Un toque de color relajante */
+        }
+        .mensaje-info {
+            color: #d33; /* Rojo para mensajes de error o alerta */
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .btn-volver {
+            display: block; /* Para que ocupe su propia línea */
+            width: fit-content; /* Se ajusta al contenido */
+            margin: 30px auto 0 auto; /* Centrar y más espacio arriba */
+            padding: 12px 25px;
+            background-color: #6c757d; /* Un gris neutro, para volver */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn-volver:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+        .veterinarios-registrados {
+            margin-top: 40px; /* Más espacio para separar */
+            padding: 20px;
+            border: 1px solid #b0e0e6; /* Un borde celeste suave */
+            border-radius: 10px;
+            background-color: #f5fafd; /* Un fondo muy clarito */
+            text-align: center;
+        }
+        .veterinarios-registrados ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex; /* Para que la lista se vea más organizada */
+            flex-wrap: wrap; /* Si hay muchos, que se organicen */
+            justify-content: center;
+            gap: 15px; /* Espacio entre los elementos de la lista */
+        }
+        .veterinarios-registrados li {
+            background-color: #ffffff;
+            padding: 8px 15px;
+            border-radius: 20px; /* ¡Forma de píldora para los nombres! */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            border: 1px solid #cceeff;
+            font-weight: bold;
+            color: #0056b3;
+            transition: transform 0.2s ease;
+        }
+        .veterinarios-registrados li:hover {
+            transform: scale(1.03); /* Un pequeño "zoom" al pasar el ratón */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌟 ¡Conoce a Nuestros Héroes Veterinarios en WowWow! 🌟</h1>
+
+        <form th:action="@{/recepcionista/veterinarios-disponibles}" method="get">
+            <label for="nombre">🔍 ¿Buscas a alguien en particular? ¡Escribe su nombre aquí!</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Ej: Dr. Pérez" required>
+            <button type="submit">¡Buscar Veterinaria/o!</button>
+        </form>
+
+        <div th:if="${mensaje}" th:text="${mensaje}" class="mensaje-info"></div>
+
+        <div th:if="${veterinarioSeleccionado}">
+            <h2>📅 Agenda del Dr(a). <span th:text="${veterinarioSeleccionado.nombre}"></span>: ¡Siempre Listos!</h2>
+            <table th:if="${citas}">
+                <thead>
+                    <tr>
+                        <th>Dueño/a</th>
+                        <th>Mascota Paciente</th>
+                        <th>Fecha y Hora Clave</th>
+                        <th>Motivo de la Visita</th>
+                        <th>Estado de la Cita</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cita : ${citas}">
+                        <td th:text="${cita.usuarioNombre}"></td>
+                        <td th:text="${cita.mascotaNombre}"></td>
+                        <td th:text="${#temporals.format(cita.fechaHora, 'dd-MM-yyyy HH:mm')}"></td> <td th:text="${cita.motivo}"></td>
+                        <td th:text="${cita.estado}"></td>
+                    </tr>
+                    <tr th:if="${citas.isEmpty()}">
+                        <td colspan="5">¡Vaya! Este/a veterinario/a tiene la agenda libre por ahora. ¡Es un buen momento para agendar!</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="veterinarios-registrados">
+            <h3>Nuestros Valiosos Veterinarios en WowWow 🐾</h3>
+            <div th:if="${todosVeterinarios.isEmpty()}">
+                <p>¡Ups! Parece que no hemos registrado a ningún veterinario aún. ¡Pronto tendremos más héroes!</p>
+            </div>
+            <ul th:if="${!todosVeterinarios.isEmpty()}">
+                <li th:each="veterinario : ${todosVeterinarios}" th:text="${veterinario.nombre}"></li>
+            </ul>
+        </div>
+
+        <a th:href="@{/}" class="btn-volver">↩️ Regresar al Panel de Recepción: ¡El Centro de Mando!</a>
+    </div>
+</body>
+</html>

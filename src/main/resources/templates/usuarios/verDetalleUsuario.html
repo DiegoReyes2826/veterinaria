@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Usuario</title></head>
+<body>
+<h1>Detalle del Usuario</h1>
+<p><strong>Nombre:</strong> <span th:text="${usuario.nombre}"></span></p>
+<p><strong>Correo:</strong> <span th:text="${usuario.correo}"></span></p>
+<p><strong>Rol:</strong> <span th:text="${usuario.rol}"></span></p>
+<a th:href="@{/usuarios}">Volver</a>
+</body>
+</html>
